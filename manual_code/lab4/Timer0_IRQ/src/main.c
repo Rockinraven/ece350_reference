@@ -47,6 +47,9 @@ extern volatile uint32_t g_timer_count;
 
 int main () {
 
+
+		
+	
     volatile uint8_t sec = 0;
     TM_TICK tk ={ 0, 0};
 
@@ -57,8 +60,17 @@ int main () {
     uart1_init();   
     init_printf(NULL, putc);
     __enable_irq();
+		printf("%c[0;0f%c[0J", 27, 27);
     uart1_put_string("\r\nTimer0 IRQ fires every 500 microseconds.\r\n");
     uart1_put_string("Timer1 is a free running timer. PC increments very 10 nsec and TC increments every 1 sec.\r\n");
+		
+//			printf("%c[2;0f", 27);
+//			printf("%c[9D", 27);
+//		printf("[H");	// home
+//		printf("HH:MM:SS");
+//		printf("\0x1b[1000C");	//all the way right
+//		printf("right");
+		
     while (1) {
         /* g_timer_count gets updated every 500 us */
         if (g_timer_count % 2000 == 0) { 
@@ -66,6 +78,8 @@ int main () {
             if ( retval != 0 ) {
                 printf("ERR: reading timer1 register failed\r\n");
             }
+						printf("%c[0;90f", 27);
+						//printf("%c[10D", 27);	// go forward 9
             printf("%u: TC = %u, PC = %u\r\n", sec++, tk.tc, tk.pc);
         }     
     }
